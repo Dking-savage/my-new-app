@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Interactive Web App</title>
+  <!-- Link to the external CSS file -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hello from Dking Savage!</h1>
+
+  <div class="card">
+    <h1>🚀 My Dashboard</h1>
+    <div id="clock">Loading time...</div>
+
+    <div class="input-group">
+      <input type="text" id="taskInput" placeholder="Add a new task...">
+      <button onclick="addTask()">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+  <!-- Link to the external JavaScript file -->
+  <script src="script.js"></script>
 </body>
 </html>
