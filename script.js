@@ -6,13 +6,13 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// 2. Load existing tasks from localStorage when the page loads
+// 2. Load existing tasks and completion states from localStorage
 document.addEventListener("DOMContentLoaded", loadTasks);
 
 function loadTasks() {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-  tasks.forEach(taskText => {
-    renderTaskElement(taskText);
+  tasks.forEach(taskObj => {
+    renderTaskElement(taskObj.text, taskObj.completed);
   });
 }
 
@@ -23,32 +23,55 @@ function addTask() {
   
   if (taskText === "") return;
 
-  renderTaskElement(taskText);
+  renderTaskElement(taskText, false);
   saveTasksToLocalStorage();
   input.value = "";
 }
 
 // 4. Render a task onto the page screen
-function renderTaskElement(text) {
+function renderTaskElement(text, isCompleted) {
   const ul = document.getElementById('taskList');
   const li = document.createElement('li');
   
-  li.innerHTML = `<span>${text}</span> <button onclick="removeTask(this)">X</button>`;
+  if (isCompleted) {
+    li.classList.add('completed');
+  }
+
+  li.innerHTML = `<span>${text}</span> <button onclick="removeTask(event, this)">X</button>`;
+  
+  // Click on the task text to toggle completed state
+  li.addEventListener('click', function(e) {
+    if (e.target.tagName !== 'BUTTON') {
+      li.classList.toggle('completed');
+      saveTasksToLocalStorage();
+    }
+  });
+
   ul.appendChild(li);
 }
 
-// 5. Remove a task and update storage
-function removeTask(button) {
+// 5. Remove an individual task
+function removeTask(event, button) {
+  event.stopPropagation(); // Prevent triggering the li click event
   button.parentElement.remove();
   saveTasksToLocalStorage();
 }
 
-// 6. Save current task list array to browser storage
+// 6. Clear all tasks
+function clearAllTasks() {
+  document.getElementById('taskList').innerHTML = "";
+  localStorage.removeItem('tasks');
+}
+
+// 7. Save current task list array and states to browser storage
 function saveTasksToLocalStorage() {
   const ul = document.getElementById('taskList');
   const tasks = [];
-  ul.querySelectorAll('li span').forEach(span => {
-    tasks.push(span.innerText);
+  ul.querySelectorAll('li').forEach(li => {
+    tasks.push({
+      text: li.querySelector('span').innerText,
+      completed: li.classList.contains('completed')
+    });
   });
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
