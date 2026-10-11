@@ -5,16 +5,21 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh; /* Changed from height to min-height for mobile scrolling */
   margin: 0;
+  padding: 15px;      /* Adds breathing room on small phone screens */
+  box-sizing: border-box;
 }
+
 .card {
   background-color: #161b22;
   border: 1px solid #30363d;
-  padding: 30px;
+  padding: 20px;
   border-radius: 12px;
-  width: 350px;
+  width: 100%;        /* Scales fluidly to fill narrow screens */
+  max-width: 380px;   /* Caps the width so it stays sleek on desktop */
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  box-sizing: border-box;
 }
 h1 {
   font-size: 1.4rem;
