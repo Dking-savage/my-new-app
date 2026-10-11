@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Interactive Web App</title>
+  <title>My Interactive Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="card">
-    <h1>🚀 My Dashboard</h1>
+    <h1>🚀 Dking ChronoList</h1>
     <div id="clock">Loading time...</div>
 
     <div class="input-group">
@@ -17,9 +17,17 @@
       <button onclick="addTask()">Add</button>
     </div>
 
+    <!-- Filter Tabs -->
+    <div class="filter-group">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('active', this)">Active</button>
+      <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+    </div>
+
+    <div id="taskCounter">0 items remaining</div>
+
     <ul id="taskList"></ul>
 
-    <!-- New Clear All Button -->
     <button id="clearBtn" onclick="clearAllTasks()">Clear All Tasks</button>
   </div>
 
