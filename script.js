@@ -1,3 +1,5 @@
+let currentFilter = 'all';
+
 // 1. Live Clock Function
 function updateClock() {
   const now = new Date();
@@ -14,6 +16,8 @@ function loadTasks() {
   tasks.forEach(taskObj => {
     renderTaskElement(taskObj.text, taskObj.completed, taskObj.time);
   });
+  updateCounter();
+  applyFilter();
 }
 
 // 3. Add a new task with a timestamp
@@ -23,12 +27,13 @@ function addTask() {
   
   if (taskText === "") return;
 
-  // Generate formatted time string (e.g., "09:45 PM")
   const now = new Date();
   const timeText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   renderTaskElement(taskText, false, timeText);
   saveTasksToLocalStorage();
+  updateCounter();
+  applyFilter();
   input.value = "";
 }
 
@@ -49,11 +54,12 @@ function renderTaskElement(text, isCompleted, timeText) {
     <button onclick="removeTask(event, this)">X</button>
   `;
   
-  // Click on the task text to toggle completed state
   li.addEventListener('click', function(e) {
     if (e.target.tagName !== 'BUTTON') {
       li.classList.toggle('completed');
       saveTasksToLocalStorage();
+      updateCounter();
+      applyFilter();
     }
   });
 
@@ -62,18 +68,63 @@ function renderTaskElement(text, isCompleted, timeText) {
 
 // 5. Remove an individual task
 function removeTask(event, button) {
-  event.stopPropagation(); // Prevent triggering the li click event
+  event.stopPropagation();
   button.parentElement.parentElement.remove();
   saveTasksToLocalStorage();
+  updateCounter();
+  applyFilter();
 }
 
 // 6. Clear all tasks
 function clearAllTasks() {
   document.getElementById('taskList').innerHTML = "";
   localStorage.removeItem('tasks');
+  updateCounter();
 }
 
-// 7. Save current task list array, states, and timestamps to browser storage
+// 7. Set active filter and re-apply
+function setFilter(filterType, buttonElement) {
+  currentFilter = filterType;
+
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  buttonElement.classList.add('active');
+
+  applyFilter();
+}
+
+// 8. Show/hide tasks based on the current filter selection
+function applyFilter() {
+  const items = document.querySelectorAll('#taskList li');
+  items.forEach(li => {
+    const isCompleted = li.classList.contains('completed');
+    if (currentFilter === 'all') {
+      li.style.display = 'flex';
+    } else if (currentFilter === 'active' && !isCompleted) {
+      li.style.display = 'flex';
+    } else if (currentFilter === 'completed' && isCompleted) {
+      li.style.display = 'flex';
+    } else {
+      li.style.display = 'none';
+    }
+  });
+}
+
+// 9. Update the task counter display text
+function updateCounter() {
+  const ul = document.getElementById('taskList');
+  const total = ul.querySelectorAll('li').length;
+  const completed = ul.querySelectorAll('li.completed').length;
+  const remaining = total - completed;
+
+  const counterEl = document.getElementById('taskCounter');
+  if (total === 0) {
+    counterEl.innerText = "No tasks yet";
+  } else {
+    counterEl.innerText = `${remaining} remaining (${completed} completed)`;
+  }
+}
+
+// 10. Save current task list array, states, and timestamps to browser storage
 function saveTasksToLocalStorage() {
   const ul = document.getElementById('taskList');
   const tasks = [];
