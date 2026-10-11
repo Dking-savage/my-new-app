@@ -29,7 +29,7 @@ h1 {
 .input-group {
   display: flex;
   gap: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 input {
   flex: 1;
@@ -51,6 +51,39 @@ button {
 button:hover {
   background-color: #2ea043;
 }
+.filter-group {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+.filter-btn {
+  flex: 1;
+  padding: 6px;
+  background-color: #21262d;
+  color: #8b949e;
+  font-size: 0.8rem;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: normal;
+}
+.filter-btn:hover {
+  background-color: #30363d;
+  color: #c9d1d9;
+}
+.filter-btn.active {
+  background-color: #1f6feb;
+  color: white;
+  border-color: #1f6feb;
+  font-weight: bold;
+}
+#taskCounter {
+  font-size: 0.85rem;
+  color: #8b949e;
+  margin-bottom: 12px;
+  text-align: center;
+  font-weight: bold;
+}
 ul {
   list-style-type: none;
   padding: 0;
@@ -68,8 +101,19 @@ li {
   align-items: center;
   cursor: pointer;
 }
-/* Style for completed / checked tasks */
-li.completed span {
+.task-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 10px;
+  overflow: hidden;
+}
+.task-time {
+  font-size: 0.75rem;
+  color: #8b949e;
+  white-space: nowrap;
+}
+li.completed .task-content span {
   text-decoration: line-through;
   color: #8b949e;
 }
@@ -89,17 +133,4 @@ li button:hover {
 #clearBtn:hover {
   background-color: #da3633;
   color: white;
-}
-/* Add this inside style.css */
-.task-content {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: 10px;
-  overflow: hidden;
-}
-.task-time {
-  font-size: 0.75rem;
-  color: #8b949e;
-  white-space: nowrap;
 }
